@@ -1,9 +1,56 @@
 const chalk = require('chalk');
+const yargs = require('yargs');
 const notes = require('./notes.js');
 
-const warning = chalk.keyword('orange');
+yargs.command({
+    command: 'add',
+    describe: 'Add a new note',
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        },
+        body: {
+            describe: 'Note body',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: function(argv){
+        notes.addNotes(argv.title,argv.body);
+    }
+})
 
-console.log(notes.getNotes());
+yargs.command({
+    command: 'remove',
+    describe: 'Remove a note',
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: function(argv){
+        notes.removeNote(argv.title);
+    }
+})
 
-console.log(chalk.bgBlue.black('Success!'));
-console.log(warning('Ai mãe!'));
+yargs.command({
+    command: 'read',
+    describe: 'Read a note',
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: function(argv){
+        notes.addNote(argv.title,argv.body);
+    }
+})
+
+yargs.parse();
+//console.log(yargs.argv);
